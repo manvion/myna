@@ -41,7 +41,7 @@ const PORT = parseInt(process.env.PORT || process.env.API_PORT || "3001");
 
 // ── Security middleware ────────────────────────────────────────────────────────
 app.use(helmet());
-app.use(cors({ origin: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000", credentials: true }));
+app.use(cors({ origin: process.env.NEXT_PUBLIC_WEB_URL || "http://localhost:3000", credentials: true }));
 
 // ── Raw body routes (must be before express.json) ────────────────────────────
 app.use("/webhook/whatsapp", express.raw({ type: "application/json" }));
