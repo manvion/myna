@@ -41,22 +41,7 @@ const PORT = parseInt(process.env.PORT || process.env.API_PORT || "3001");
 
 // ── Security middleware ────────────────────────────────────────────────────────
 app.use(helmet());
-app.use(cors({
-  origin: (origin, callback) => {
-    // Allow requests with no origin (mobile, curl, server-to-server)
-    if (!origin) return callback(null, true);
-    const allowed = [
-      process.env.NEXT_PUBLIC_WEB_URL,
-      "http://localhost:3000",
-      "http://localhost:3001",
-    ].filter(Boolean);
-    if (allowed.includes(origin) || origin.endsWith(".vercel.app")) {
-      return callback(null, true);
-    }
-    callback(new Error(`CORS blocked: ${origin}`));
-  },
-  credentials: true,
-}));
+app.use(cors({ origin: true, credentials: true }));
 
 // ── Raw body routes (must be before express.json) ────────────────────────────
 app.use("/webhook/whatsapp", express.raw({ type: "application/json" }));
