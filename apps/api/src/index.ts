@@ -32,6 +32,7 @@ if (missing.length) {
 }
 
 const app = express();
+app.set("trust proxy", 1);
 const PORT = parseInt(process.env.PORT || process.env.API_PORT || "3001");
 
 // ── Ensure required directories exist ─────────────────────────────────────────
