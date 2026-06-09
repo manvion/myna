@@ -1,0 +1,385 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── ENUMS ────────────────────────────────────────────────────────────────────
+
+enum WorkspaceType {
+  RESTAURANT
+  REAL_ESTATE
+  ECOMMERCE
+  CREATOR
+  BUSINESS_SERVICES
+  EVENTS
+  EDUCATION
+  PERSONAL
+  FITNESS_GYM
+  SALON_SPA
+  FASHION
+  TRAVEL
+  HEALTHCARE
+  AUTOMOBILE
+  PHOTOGRAPHY
+  INTERIOR_DESIGN
+  HOTEL
+  JEWELRY
+}
+
+enum ContentType {
+  REEL
+  POST
+  STORY
+  YOUTUBE_SHORT
+  TIKTOK
+  MARKETING_IMAGE
+  CAPTION_PACK
+}
+
+enum AudioType {
+  BACKGROUND_MUSIC
+  USER_VOICE
+  AI_VOICEOVER
+  NONE
+}
+
+enum AspectRatio {
+  PORTRAIT_9_16
+  SQUARE_1_1
+  LANDSCAPE_16_9
+}
+
+enum JobStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum PostStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+  FAILED
+}
+
+enum Platform {
+  INSTAGRAM
+  FACEBOOK
+  TIKTOK
+  YOUTUBE
+  LINKEDIN
+  TWITTER
+  DOWNLOAD_ONLY
+}
+
+enum MessageDirection {
+  INBOUND
+  OUTBOUND
+}
+
+enum OnboardingStep {
+  PHONE_VERIFIED
+  WORKSPACE_SELECTED
+  BRAND_SETUP
+  SOCIAL_CONNECTED
+  COMPLETED
+}
+
+enum SubscriptionTier {
+  FREE        // 1 generation total, WACS watermark
+  GROWTH      // 30 generations/month, no watermark
+  UNLIMITED   // unlimited, no watermark, priority queue
+}
+
+enum PricingCategory {
+  HIGH_VALUE    // Real estate, healthcare, hotel, auto, interior design
+  PROFESSIONAL  // Education, photography, events, business services, travel, jewelry
+  STANDARD      // Restaurant, ecommerce, fitness, salon, fashion, creator
+  PERSONAL      // Personal
+}
+
+// ─── CORE TABLES ──────────────────────────────────────────────────────────────
+
+model User {
+  id                    String           @id @default(cuid())
+  phone                 String           @unique
+  name                  String?
+  email                 String?          @unique
+  passwordHash          String?
+  onboardingStep        OnboardingStep   @default(PHONE_VERIFIED)
+  isActive              Boolean          @default(true)
+
+  // Subscription
+  subscriptionTier      SubscriptionTier @default(FREE)
+  subscriptionValidUntil DateTime?
+  videosThisMonth       Int              @default(0)
+  videoQuota            Int              @default(1)          // FREE=1 total, GROWTH=30/mo, UNLIMITED=-1
+  totalGenerations      Int              @default(0)          // lifetime count
+  pricingCategory       PricingCategory  @default(STANDARD)
+
+  // Stripe
+  stripeCustomerId      String?          @unique
+  stripeSubscriptionId  String?          @unique
+
+  // Admin controls
+  isBlocked             Boolean          @default(false)
+  blockReason           String?
+  adminNotes            String?
+
+  // Language & locale
+  language              String           @default("English")
+  detectedScript        String?          // "latin", "devanagari", "arabic", "tamil", etc.
+
+  // Growth
+  referralCode          String?          @unique
+  referredBy            String?
+
+  createdAt             DateTime         @default(now())
+  updatedAt             DateTime         @updatedAt
+
+  workspace             Workspace?
+  mediaUploads          MediaUpload[]
+  generatedContent      GeneratedContent[]
+  whatsappMessages      WhatsAppMessage[]
+  socialAccounts        SocialAccount[]
+  scheduledPosts        ScheduledPost[]
+
+  @@index([phone])
+  @@index([referralCode])
+}
+
+model Workspace {
+  id              String          @id @default(cuid())
+  userId          String          @unique
+  type            WorkspaceType
+  businessName    String?
+  industry        String?
+  tone            String          @default("professional")
+  targetAudience  String?
+  primaryColor    String?
+  logoUrl         String?
+  watermarkUrl    String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  brandProfile    BrandProfile?
+  campaigns       Campaign[]
+
+  @@index([userId, type])
+}
+
+model BrandProfile {
+  id              String          @id @default(cuid())
+  workspaceId     String          @unique
+  websiteUrl      String?
+  scrapedAt       DateTime?
+  businessSummary String?
+  services        Json?           // string[]
+  products        Json?           // { name, price, description }[]
+  offers          Json?           // string[]
+  scrapedImages   Json?           // string[] (urls)
+  brandVoice      String?
+  contentMatrix   Json?           // generated 30-day content plan
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  workspace       Workspace       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+}
+
+model MediaUpload {
+  id              String          @id @default(cuid())
+  userId          String
+  whatsappMediaId String?
+  localPath       String?
+  publicUrl       String?
+  mimeType        String
+  fileSize        Int?
+  durationSeconds Float?
+  width           Int?
+  height          Int?
+  thumbnail       String?
+  transcription   String?
+  caption         String?
+  createdAt       DateTime        @default(now())
+
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  generatedContent GeneratedContent[]
+
+  @@index([userId])
+  @@index([whatsappMediaId])
+}
+
+model GeneratedContent {
+  id              String          @id @default(cuid())
+  userId          String
+  mediaUploadId   String?
+  contentType     ContentType
+  jobStatus       JobStatus       @default(PENDING)
+  jobId           String?
+  jobError        String?
+
+  // AI output
+  hook            String?
+  script          String?
+  caption         String?
+  hashtags        Json?           // string[]
+  callToAction    String?
+  postVariants    Json?           // { platform: string, text: string }[]
+
+  // video config
+  audioType       AudioType       @default(NONE)
+  aspectRatio     AspectRatio     @default(PORTRAIT_9_16)
+  style           String?
+  musicTrackUrl   String?
+  voiceoverText   String?
+  voiceoverUrl    String?
+
+  // output
+  videoPath       String?
+  videoUrl        String?
+  thumbnailUrl    String?
+  durationSeconds Float?
+
+  // iteration
+  iteration       Int             @default(1)
+  parentId        String?
+  approvedAt      DateTime?
+
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mediaUpload     MediaUpload?    @relation(fields: [mediaUploadId], references: [id])
+  parent          GeneratedContent? @relation("Iterations", fields: [parentId], references: [id])
+  iterations      GeneratedContent[] @relation("Iterations")
+  scheduledPosts  ScheduledPost[]
+
+  @@index([userId, jobStatus])
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([jobId])
+}
+
+model Campaign {
+  id              String          @id @default(cuid())
+  workspaceId     String
+  name            String
+  description     String?
+  startDate       DateTime?
+  endDate         DateTime?
+  contentPlan     Json?           // 30-day content matrix
+  isActive        Boolean         @default(true)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  workspace       Workspace       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  scheduledPosts  ScheduledPost[]
+
+  @@index([workspaceId])
+}
+
+model ScheduledPost {
+  id              String          @id @default(cuid())
+  userId          String
+  contentId       String
+  campaignId      String?
+  platform        Platform
+  scheduledAt     DateTime
+  publishedAt     DateTime?
+  status          PostStatus      @default(SCHEDULED)
+  platformPostId  String?
+  errorMessage    String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content         GeneratedContent @relation(fields: [contentId], references: [id])
+  campaign        Campaign?       @relation(fields: [campaignId], references: [id])
+
+  @@index([userId, scheduledAt])
+  @@index([status, scheduledAt])
+  @@index([scheduledAt])
+}
+
+model SocialAccount {
+  id              String          @id @default(cuid())
+  userId          String
+  platform        Platform
+  accountId       String
+  accountName     String
+  accessToken     String
+  refreshToken    String?
+  tokenExpiresAt  DateTime?
+  isActive        Boolean         @default(true)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, platform])
+  @@index([userId])
+}
+
+model WhatsAppMessage {
+  id              String          @id @default(cuid())
+  userId          String?
+  waMessageId     String          @unique
+  waPhoneNumber   String
+  direction       MessageDirection
+  messageType     String
+  textBody        String?
+  mediaId         String?
+  mediaUrl        String?
+  buttons         Json?
+  selectedButton  String?
+  contextData     Json?
+  processedAt     DateTime?
+  createdAt       DateTime        @default(now())
+
+  user            User?           @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([waPhoneNumber])
+  @@index([userId])
+}
+
+model ConversationState {
+  id              String          @id @default(cuid())
+  phone           String          @unique
+  currentFlow     String
+  currentStep     String
+  contextData     Json            @default("{}")
+  expiresAt       DateTime
+  updatedAt       DateTime        @updatedAt
+
+  @@index([phone])
+  @@index([expiresAt])
+}
+
+model AdminUser {
+  id              String          @id @default(cuid())
+  email           String          @unique
+  passwordHash    String
+  name            String
+  role            String          @default("admin")   // admin | superadmin
+  lastLoginAt     DateTime?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+}
+
+model EmailCampaign {
+  id              String          @id @default(cuid())
+  subject         String
+  body            String          @db.Text
+  targetTier      SubscriptionTier?  // null = all users
+  targetCategory  PricingCategory?   // null = all categories
+  sentCount       Int             @default(0)
+  status          String          @default("DRAFT")   // DRAFT | SENT | FAILED
+  sentAt          DateTime?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+}

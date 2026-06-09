@@ -1,0 +1,13 @@
+node_modules/
+.next/
+dist/
+.env
+.env.local
+storage/uploads/
+storage/output/
+storage/temp/
+tmp/
+logs/
+*.log
+*.err
+.turbo/

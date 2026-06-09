@@ -1,0 +1,21 @@
+[build]
+builder = "nixpacks"
+buildCommand = "pnpm install --frozen-lockfile && pnpm --filter @myna/api db:generate && pnpm --filter @myna/api build"
+
+[deploy]
+startCommand = "node apps/api/dist/index.js"
+healthcheckPath = "/health"
+healthcheckTimeout = 300
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3
+
+[[services]]
+name = "myna-api"
+source = "/"
+
+[services.variables]
+NODE_ENV = "production"
+API_PORT = "3001"
+STORAGE_TYPE = "cloudflare-r2"
+FFMPEG_PATH = "/usr/bin/ffmpeg"
+FFPROBE_PATH = "/usr/bin/ffprobe"
