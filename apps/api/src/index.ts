@@ -41,6 +41,10 @@ const PORT = parseInt(process.env.PORT || process.env.API_PORT || "3001");
 
 // ── Security middleware ────────────────────────────────────────────────────────
 app.use(helmet());
+app.use((req, res, next) => {
+  if (req.method === "OPTIONS") res.setHeader("Cache-Control", "no-store");
+  next();
+});
 app.use(cors({ origin: true, credentials: true }));
 
 // ── Raw body routes (must be before express.json) ────────────────────────────
