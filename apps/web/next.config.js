@@ -1,9 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  env: {
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001",
-    NEXT_PUBLIC_WEB_URL: process.env.NEXT_PUBLIC_WEB_URL || "http://localhost:3000",
-  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "**.pexels.com" },
