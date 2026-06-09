@@ -197,13 +197,7 @@ For production, you must add a real number:
 ### 5.2 Configure the service
 
 1. Click on the service → **Settings** tab
-2. Set:
-
-| Setting | Value |
-|---------|-------|
-| Root Directory | `apps/api` |
-| Build Command | `pnpm install && pnpm build` |
-| Start Command | `node dist/index.js` |
+2. **Leave Root Directory, Build Command, and Start Command all blank.** The `railway.toml` at the repo root handles everything. Setting Root Directory to `apps/api` will break the build by excluding `packages/shared`.
 
 3. Under **Settings → Networking** → click **Generate Domain**
 4. Copy the generated URL (e.g. `https://myna-api-production.up.railway.app`) — this is your `API_BASE_URL`
