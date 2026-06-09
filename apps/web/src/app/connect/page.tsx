@@ -1,16 +1,16 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Sidebar } from "@/components/Sidebar";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://myna-production-d05b.up.railway.app";
 
 const PLATFORMS = [
-  { id: "instagram", label: "Instagram", icon: "📸", color: "from-pink-500 to-purple-600", desc: "Post Reels and feed photos" },
-  { id: "facebook", label: "Facebook", icon: "📘", color: "from-blue-600 to-blue-800", desc: "Post videos and updates" },
-  { id: "tiktok", label: "TikTok", icon: "🎵", color: "from-gray-800 to-gray-950", desc: "Post short-form videos" },
-  { id: "youtube", label: "YouTube", icon: "▶️", color: "from-red-600 to-red-800", desc: "Post Shorts and videos" },
+  { id: "instagram", label: "Instagram", icon: "ðŸ“¸", color: "from-pink-500 to-purple-600", desc: "Post Reels and feed photos" },
+  { id: "facebook", label: "Facebook", icon: "ðŸ“˜", color: "from-blue-600 to-blue-800", desc: "Post videos and updates" },
+  { id: "tiktok", label: "TikTok", icon: "ðŸŽµ", color: "from-gray-800 to-gray-950", desc: "Post short-form videos" },
+  { id: "youtube", label: "YouTube", icon: "â–¶ï¸", color: "from-red-600 to-red-800", desc: "Post Shorts and videos" },
 ];
 
 export default function ConnectPage() {

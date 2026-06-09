@@ -1,19 +1,19 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://myna-production-d05b.up.railway.app";
 
 const WORKSPACES = [
-  { id: "RESTAURANT", icon: "🍔", label: "Restaurant / Food", desc: "Food photos, menu promos, viral reels" },
-  { id: "REAL_ESTATE", icon: "🏠", label: "Real Estate", desc: "Property tours, listing posts, market tips" },
-  { id: "ECOMMERCE", icon: "📦", label: "Ecommerce / Products", desc: "Product reels, sale posts, unboxing content" },
-  { id: "CREATOR", icon: "🎥", label: "Creator / Influencer", desc: "Viral reels, brand deals, audience growth" },
-  { id: "BUSINESS_SERVICES", icon: "💼", label: "Business Services", desc: "Authority content, lead gen, brand building" },
-  { id: "EVENTS", icon: "📢", label: "Events / Promotions", desc: "Teasers, ticket promos, highlight reels" },
-  { id: "EDUCATION", icon: "🎓", label: "Education / Coaching", desc: "Course promos, tips reels, testimonials" },
-  { id: "PERSONAL", icon: "🏡", label: "Personal / Family", desc: "Birthday reels, memories, WhatsApp status, family moments" },
+  { id: "RESTAURANT", icon: "ðŸ”", label: "Restaurant / Food", desc: "Food photos, menu promos, viral reels" },
+  { id: "REAL_ESTATE", icon: "ðŸ ", label: "Real Estate", desc: "Property tours, listing posts, market tips" },
+  { id: "ECOMMERCE", icon: "ðŸ“¦", label: "Ecommerce / Products", desc: "Product reels, sale posts, unboxing content" },
+  { id: "CREATOR", icon: "ðŸŽ¥", label: "Creator / Influencer", desc: "Viral reels, brand deals, audience growth" },
+  { id: "BUSINESS_SERVICES", icon: "ðŸ’¼", label: "Business Services", desc: "Authority content, lead gen, brand building" },
+  { id: "EVENTS", icon: "ðŸ“¢", label: "Events / Promotions", desc: "Teasers, ticket promos, highlight reels" },
+  { id: "EDUCATION", icon: "ðŸŽ“", label: "Education / Coaching", desc: "Course promos, tips reels, testimonials" },
+  { id: "PERSONAL", icon: "ðŸ¡", label: "Personal / Family", desc: "Birthday reels, memories, WhatsApp status, family moments" },
 ];
 
 type Step = "phone" | "workspace" | "done";
@@ -119,7 +119,7 @@ export default function OnboardingPage() {
                 disabled={loading}
                 className="w-full bg-green-500 hover:bg-green-400 disabled:opacity-50 text-gray-950 font-bold py-3.5 rounded-xl transition-colors"
               >
-                {loading ? "Setting up..." : "Continue →"}
+                {loading ? "Setting up..." : "Continue â†’"}
               </button>
             </form>
           </div>
@@ -162,7 +162,7 @@ export default function OnboardingPage() {
         {/* Step 3: Done */}
         {step === "done" && (
           <div className="animate-slide-up text-center">
-            <div className="text-6xl mb-4">🎉</div>
+            <div className="text-6xl mb-4">ðŸŽ‰</div>
             <h1 className="text-3xl font-black mb-3">You're All Set!</h1>
             <p className="text-gray-400 mb-8">
               Your{" "}
@@ -175,10 +175,10 @@ export default function OnboardingPage() {
             <div className="glass rounded-2xl p-6 mb-6 text-left space-y-3">
               <h3 className="font-semibold text-green-400">What you can do now:</h3>
               <ul className="space-y-2 text-sm text-gray-300">
-                <li>📸 Send a photo → get a viral reel</li>
-                <li>🌐 Send your website URL → get 30-day content plan</li>
-                <li>🎥 Send a video → get edited with music & captions</li>
-                <li>✍️ Type a prompt → get posts, captions & hashtags</li>
+                <li>ðŸ“¸ Send a photo â†’ get a viral reel</li>
+                <li>ðŸŒ Send your website URL â†’ get 30-day content plan</li>
+                <li>ðŸŽ¥ Send a video â†’ get edited with music & captions</li>
+                <li>âœï¸ Type a prompt â†’ get posts, captions & hashtags</li>
               </ul>
             </div>
 
@@ -188,7 +188,7 @@ export default function OnboardingPage() {
               rel="noopener noreferrer"
               className="block w-full bg-green-500 hover:bg-green-400 text-gray-950 font-bold py-4 rounded-xl text-lg transition-all hover:scale-105 mb-3"
             >
-              📱 Open WhatsApp →
+              ðŸ“± Open WhatsApp â†’
             </a>
             <button
               onClick={() => router.push("/dashboard")}

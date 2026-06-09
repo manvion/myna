@@ -1,15 +1,15 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Sidebar } from "@/components/Sidebar";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://myna-production-d05b.up.railway.app";
 
 const WORKSPACE_ICONS: Record<string, string> = {
-  RESTAURANT: "🍔", REAL_ESTATE: "🏠", ECOMMERCE: "📦",
-  CREATOR: "🎥", BUSINESS_SERVICES: "💼", EVENTS: "📢",
-  EDUCATION: "🎓", PERSONAL: "🏡",
+  RESTAURANT: "ðŸ”", REAL_ESTATE: "ðŸ ", ECOMMERCE: "ðŸ“¦",
+  CREATOR: "ðŸŽ¥", BUSINESS_SERVICES: "ðŸ’¼", EVENTS: "ðŸ“¢",
+  EDUCATION: "ðŸŽ“", PERSONAL: "ðŸ¡",
 };
 
 interface Content {
@@ -73,7 +73,7 @@ export default function DashboardPage() {
         <div className="flex items-start justify-between mb-8">
           <div>
             <h1 className="text-2xl font-black">
-              {WORKSPACE_ICONS[workspace?.type] || "🚀"} {workspace?.type?.replace(/_/g, " ")} Dashboard
+              {WORKSPACE_ICONS[workspace?.type] || "ðŸš€"} {workspace?.type?.replace(/_/g, " ")} Dashboard
             </h1>
             <p className="text-gray-400 text-sm mt-1">
               Welcome back, {user?.name?.split(" ")[0] || "there"}
@@ -84,17 +84,17 @@ export default function DashboardPage() {
             target="_blank"
             className="bg-green-500 hover:bg-green-400 text-gray-950 font-bold px-4 py-2.5 rounded-lg text-sm transition-colors whitespace-nowrap"
           >
-            📱 Create Content
+            ðŸ“± Create Content
           </a>
         </div>
 
         {/* Stats row */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {[
-            { label: "Total Created", value: content.length, icon: "🎬" },
-            { label: "Completed", value: content.filter(c => c.jobStatus === "COMPLETED").length, icon: "✅" },
-            { label: "This Month", value: quotaUsed, icon: "📅" },
-            { label: "Plan", value: tier, icon: tier === "FREE" ? "🆓" : tier === "STARTER" ? "⭐" : "💎" },
+            { label: "Total Created", value: content.length, icon: "ðŸŽ¬" },
+            { label: "Completed", value: content.filter(c => c.jobStatus === "COMPLETED").length, icon: "âœ…" },
+            { label: "This Month", value: quotaUsed, icon: "ðŸ“…" },
+            { label: "Plan", value: tier, icon: tier === "FREE" ? "ðŸ†“" : tier === "STARTER" ? "â­" : "ðŸ’Ž" },
           ].map((stat) => (
             <div key={stat.label} className="glass rounded-xl p-4">
               <div className="flex items-center gap-2 mb-1">
@@ -114,7 +114,7 @@ export default function DashboardPage() {
               <span className="text-sm font-semibold">
                 {quotaUsed} / {quotaTotal} videos
                 {tier === "FREE" && (
-                  <a href="/pricing" className="ml-3 text-green-400 hover:text-green-300 text-xs">Upgrade →</a>
+                  <a href="/pricing" className="ml-3 text-green-400 hover:text-green-300 text-xs">Upgrade â†’</a>
                 )}
               </span>
             </div>
@@ -147,7 +147,7 @@ export default function DashboardPage() {
 
         {filtered.length === 0 ? (
           <div className="glass rounded-2xl p-12 text-center">
-            <div className="text-5xl mb-4">📱</div>
+            <div className="text-5xl mb-4">ðŸ“±</div>
             <h3 className="text-xl font-bold mb-2">
               {filter === "ALL" ? "No content yet" : `No ${filter.toLowerCase()} content`}
             </h3>
@@ -162,7 +162,7 @@ export default function DashboardPage() {
                 target="_blank"
                 className="bg-green-500 hover:bg-green-400 text-gray-950 font-bold px-6 py-3 rounded-xl transition-colors"
               >
-                Open WhatsApp →
+                Open WhatsApp â†’
               </a>
             )}
           </div>
@@ -177,7 +177,7 @@ export default function DashboardPage() {
                 ) : (
                   <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
                     <span className="text-4xl">
-                      {item.contentType === "REEL" ? "🎬" : item.contentType === "POST" ? "📸" : item.contentType === "QUOTE_CARD" ? "💬" : item.contentType === "THUMBNAIL" ? "🖼️" : "🎥"}
+                      {item.contentType === "REEL" ? "ðŸŽ¬" : item.contentType === "POST" ? "ðŸ“¸" : item.contentType === "QUOTE_CARD" ? "ðŸ’¬" : item.contentType === "THUMBNAIL" ? "ðŸ–¼ï¸" : "ðŸŽ¥"}
                     </span>
                   </div>
                 )}
@@ -192,7 +192,7 @@ export default function DashboardPage() {
                       item.jobStatus === "FAILED" ? "bg-red-500/20 text-red-400" :
                       "bg-gray-500/20 text-gray-400"
                     }`}>
-                      {item.jobStatus === "PROCESSING" ? "⏳ Processing" : item.jobStatus}
+                      {item.jobStatus === "PROCESSING" ? "â³ Processing" : item.jobStatus}
                     </span>
                   </div>
                   {item.hook && (
@@ -210,7 +210,7 @@ export default function DashboardPage() {
                       target="_blank"
                       className="mt-3 flex items-center justify-center gap-1 text-xs font-semibold text-green-400 hover:text-green-300 transition-colors bg-green-500/10 rounded-lg py-1.5"
                     >
-                      📥 Download
+                      ðŸ“¥ Download
                     </a>
                   )}
                 </div>

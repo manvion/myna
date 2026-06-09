@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
@@ -43,7 +43,7 @@ export default function AdminDashboard() {
   const [campaigns, setCampaigns] = useState<any[]>([]);
   const [newCampaign, setNewCampaign] = useState({ subject: "", body: "", targetTier: "", targetCategory: "" });
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://myna-production-d05b.up.railway.app";
 
   function getToken() {
     return typeof window !== "undefined" ? localStorage.getItem("adminToken") : null;
@@ -156,7 +156,7 @@ export default function AdminDashboard() {
           <span className="font-bold gradient-text">Myna Admin</span>
           <div className="flex items-center gap-4">
             <a href="/admin/queues" target="_blank" rel="noreferrer" className="text-xs text-gray-400 hover:text-white">
-              Queue Monitor ↗
+              Queue Monitor â†—
             </a>
             <button onClick={logout} className="text-xs text-gray-500 hover:text-red-400">Sign out</button>
           </div>
@@ -261,10 +261,10 @@ export default function AdminDashboard() {
                     {users.map(user => (
                       <tr key={user.id} className={`border-b border-white/5 hover:bg-white/3 ${user.isBlocked ? "opacity-50" : ""}`}>
                         <td className="p-3">
-                          <div className="font-medium text-white">{user.name || "—"}</div>
+                          <div className="font-medium text-white">{user.name || "â€”"}</div>
                           <div className="text-xs text-gray-500">{user.phone}</div>
                           {user.email && <div className="text-xs text-gray-600">{user.email}</div>}
-                          {user.isBlocked && <span className="text-xs text-red-400">⛔ Blocked</span>}
+                          {user.isBlocked && <span className="text-xs text-red-400">â›” Blocked</span>}
                         </td>
                         <td className="p-3 text-gray-400 text-xs">
                           {user.workspace ? (
@@ -272,11 +272,11 @@ export default function AdminDashboard() {
                               <div>{user.workspace.type}</div>
                               {user.workspace.businessName && <div className="text-gray-500">{user.workspace.businessName}</div>}
                             </>
-                          ) : "—"}
+                          ) : "â€”"}
                         </td>
                         <td className="p-3">{tierBadge(user.subscriptionTier)}</td>
                         <td className="p-3 text-xs text-gray-400">
-                          <div>{user.videosThisMonth} / {user.videoQuota === -1 ? "∞" : user.videoQuota} this month</div>
+                          <div>{user.videosThisMonth} / {user.videoQuota === -1 ? "âˆž" : user.videoQuota} this month</div>
                           <div className="text-gray-600">{user.totalGenerations} lifetime</div>
                         </td>
                         <td className="p-3 text-xs text-gray-500">
@@ -299,9 +299,9 @@ export default function AdminDashboard() {
 
             {/* Pagination */}
             <div className="flex items-center gap-3 justify-end">
-              <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1} className="text-xs text-gray-400 disabled:opacity-30 hover:text-white">← Prev</button>
+              <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1} className="text-xs text-gray-400 disabled:opacity-30 hover:text-white">â† Prev</button>
               <span className="text-xs text-gray-500">Page {page}</span>
-              <button onClick={() => setPage(p => p + 1)} disabled={users.length < 50} className="text-xs text-gray-400 disabled:opacity-30 hover:text-white">Next →</button>
+              <button onClick={() => setPage(p => p + 1)} disabled={users.length < 50} className="text-xs text-gray-400 disabled:opacity-30 hover:text-white">Next â†’</button>
             </div>
           </div>
         )}
@@ -363,9 +363,9 @@ export default function AdminDashboard() {
                     <div>
                       <div className="font-medium text-sm">{c.subject}</div>
                       <div className="text-xs text-gray-500 mt-1">
-                        {c.status === "SENT" ? `Sent to ${c.sentCount} users · ${new Date(c.sentAt).toLocaleDateString()}` : "Draft"}
-                        {c.targetTier && ` · ${c.targetTier}`}
-                        {c.targetCategory && ` · ${c.targetCategory}`}
+                        {c.status === "SENT" ? `Sent to ${c.sentCount} users Â· ${new Date(c.sentAt).toLocaleDateString()}` : "Draft"}
+                        {c.targetTier && ` Â· ${c.targetTier}`}
+                        {c.targetCategory && ` Â· ${c.targetCategory}`}
                       </div>
                     </div>
                     {c.status !== "SENT" && (
@@ -397,7 +397,7 @@ export default function AdminDashboard() {
             <div className="grid grid-cols-2 gap-3 text-xs text-gray-400">
               <div>Videos this month: <span className="text-white">{selectedUser.videosThisMonth}</span></div>
               <div>Lifetime: <span className="text-white">{selectedUser.totalGenerations}</span></div>
-              <div>Workspace: <span className="text-white">{selectedUser.workspace?.type || "—"}</span></div>
+              <div>Workspace: <span className="text-white">{selectedUser.workspace?.type || "â€”"}</span></div>
               <div>Status: <span className={selectedUser.isBlocked ? "text-red-400" : "text-green-400"}>{selectedUser.isBlocked ? "Blocked" : "Active"}</span></div>
             </div>
 

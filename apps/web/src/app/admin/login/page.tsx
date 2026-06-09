@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -10,7 +10,7 @@ export default function AdminLoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://myna-production-d05b.up.railway.app";
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -69,7 +69,7 @@ export default function AdminLoginPage() {
               onChange={e => setPassword(e.target.value)}
               required
               className="w-full bg-white/5 border border-white/20 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-green-500"
-              placeholder="••••••••"
+              placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
             />
           </div>
           <button

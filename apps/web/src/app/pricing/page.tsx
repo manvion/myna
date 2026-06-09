@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -72,14 +72,14 @@ const UNLIMITED_FEATURES = [
 const COMPARE_ROWS = [
   { feature: "Videos per month", free: "1 lifetime", growth: "30", unlimited: "Unlimited" },
   { feature: "Watermark", free: "Myna branded", growth: "None", unlimited: "None" },
-  { feature: "Reel scripts & captions", free: "✓", growth: "✓", unlimited: "✓" },
-  { feature: "Hashtags (30 per post)", free: "✓", growth: "✓", unlimited: "✓" },
-  { feature: "Full content kit (KIT)", free: "—", growth: "✓", unlimited: "✓" },
-  { feature: "Listing/portal descriptions", free: "—", growth: "✓", unlimited: "✓" },
-  { feature: "Story sets & DM scripts", free: "—", growth: "✓", unlimited: "✓" },
-  { feature: "Priority queue", free: "—", growth: "—", unlimited: "✓" },
-  { feature: "Social scheduling", free: "—", growth: "✓", unlimited: "✓" },
-  { feature: "Analytics", free: "—", growth: "Basic", unlimited: "Full" },
+  { feature: "Reel scripts & captions", free: "âœ“", growth: "âœ“", unlimited: "âœ“" },
+  { feature: "Hashtags (30 per post)", free: "âœ“", growth: "âœ“", unlimited: "âœ“" },
+  { feature: "Full content kit (KIT)", free: "â€”", growth: "âœ“", unlimited: "âœ“" },
+  { feature: "Listing/portal descriptions", free: "â€”", growth: "âœ“", unlimited: "âœ“" },
+  { feature: "Story sets & DM scripts", free: "â€”", growth: "âœ“", unlimited: "âœ“" },
+  { feature: "Priority queue", free: "â€”", growth: "â€”", unlimited: "âœ“" },
+  { feature: "Social scheduling", free: "â€”", growth: "âœ“", unlimited: "âœ“" },
+  { feature: "Analytics", free: "â€”", growth: "Basic", unlimited: "Full" },
 ];
 
 export default function PricingPage() {
@@ -89,7 +89,7 @@ export default function PricingPage() {
   const [loading, setLoading] = useState(false);
   const [checkingOut, setCheckingOut] = useState<string | null>(null);
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://myna-production-d05b.up.railway.app";
 
   useEffect(() => {
     const userId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
@@ -224,7 +224,7 @@ export default function PricingPage() {
               <ul className="space-y-2.5 mb-8">
                 {FREE_FEATURES.map(f => (
                   <li key={f} className="text-sm text-gray-400 flex items-start gap-2">
-                    <span className="text-gray-600 mt-0.5">✓</span>
+                    <span className="text-gray-600 mt-0.5">âœ“</span>
                     {f}
                   </li>
                 ))}
@@ -255,13 +255,13 @@ export default function PricingPage() {
                   )}
                 </div>
                 <p className="text-xs text-gray-500 mt-1">
-                  {billing === "annual" ? "Billed annually · 2 months free" : "Billed monthly"}
+                  {billing === "annual" ? "Billed annually Â· 2 months free" : "Billed monthly"}
                 </p>
               </div>
               <ul className="space-y-2.5 mb-8">
                 {GROWTH_FEATURES.map(f => (
                   <li key={f} className="text-sm text-gray-300 flex items-start gap-2">
-                    <span className="text-green-400 mt-0.5">✓</span>
+                    <span className="text-green-400 mt-0.5">âœ“</span>
                     {f}
                   </li>
                 ))}
@@ -290,13 +290,13 @@ export default function PricingPage() {
                   )}
                 </div>
                 <p className="text-xs text-gray-500 mt-1">
-                  {billing === "annual" ? "Billed annually · 2 months free" : "Billed monthly"}
+                  {billing === "annual" ? "Billed annually Â· 2 months free" : "Billed monthly"}
                 </p>
               </div>
               <ul className="space-y-2.5 mb-8">
                 {UNLIMITED_FEATURES.map(f => (
                   <li key={f} className="text-sm text-gray-300 flex items-start gap-2">
-                    <span className="text-purple-400 mt-0.5">✓</span>
+                    <span className="text-purple-400 mt-0.5">âœ“</span>
                     {f}
                   </li>
                 ))}
@@ -338,7 +338,7 @@ export default function PricingPage() {
 
           <div className="text-center mt-10 space-y-3">
             <p className="text-gray-500 text-sm">
-              Secure payments via Stripe · Cancel anytime · Prices in USD · Adjust by country
+              Secure payments via Stripe Â· Cancel anytime Â· Prices in USD Â· Adjust by country
             </p>
             <p className="text-gray-600 text-xs">
               Real estate, healthcare, and premium industries are priced for higher-value businesses.

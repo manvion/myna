@@ -1,10 +1,10 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Sidebar } from "@/components/Sidebar";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://myna-production-d05b.up.railway.app";
 
 const PLATFORM_COLORS: Record<string, string> = {
   INSTAGRAM: "bg-pink-500/20 text-pink-400 border-pink-500/30",
@@ -15,7 +15,7 @@ const PLATFORM_COLORS: Record<string, string> = {
 };
 
 const PLATFORM_ICONS: Record<string, string> = {
-  INSTAGRAM: "📸", FACEBOOK: "📘", TIKTOK: "🎵", YOUTUBE: "▶️", DOWNLOAD_ONLY: "📥",
+  INSTAGRAM: "ðŸ“¸", FACEBOOK: "ðŸ“˜", TIKTOK: "ðŸŽµ", YOUTUBE: "â–¶ï¸", DOWNLOAD_ONLY: "ðŸ“¥",
 };
 
 export default function CalendarPage() {
@@ -72,9 +72,9 @@ export default function CalendarPage() {
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-2xl font-bold">Content Calendar</h1>
             <div className="flex items-center gap-2">
-              <button onClick={() => setCurrentDate(new Date(year, month - 1, 1))} className="p-2 hover:bg-white/10 rounded-lg transition-colors">←</button>
+              <button onClick={() => setCurrentDate(new Date(year, month - 1, 1))} className="p-2 hover:bg-white/10 rounded-lg transition-colors">â†</button>
               <span className="text-sm font-medium w-36 text-center">{MONTHS[month]} {year}</span>
-              <button onClick={() => setCurrentDate(new Date(year, month + 1, 1))} className="p-2 hover:bg-white/10 rounded-lg transition-colors">→</button>
+              <button onClick={() => setCurrentDate(new Date(year, month + 1, 1))} className="p-2 hover:bg-white/10 rounded-lg transition-colors">â†’</button>
             </div>
           </div>
 
@@ -122,7 +122,7 @@ export default function CalendarPage() {
             <h2 className="text-lg font-semibold mb-4">Scheduled Posts</h2>
             {posts.length === 0 ? (
               <div className="glass rounded-xl p-8 text-center text-gray-500">
-                <p className="text-4xl mb-3">📅</p>
+                <p className="text-4xl mb-3">ðŸ“…</p>
                 <p>No scheduled posts yet.</p>
                 <p className="text-sm mt-1">Generate content on WhatsApp and choose "Schedule" when approving.</p>
               </div>

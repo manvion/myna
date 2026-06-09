@@ -1,10 +1,10 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Sidebar } from "@/components/Sidebar";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://myna-production-d05b.up.railway.app";
 
 interface Stats {
   total: number;
@@ -59,7 +59,7 @@ export default function AnalyticsPage() {
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-gray-400">This month's videos</span>
               <span className="text-sm font-medium">
-                {quotaUsed} / {quotaTotal ?? "∞"}
+                {quotaUsed} / {quotaTotal ?? "âˆž"}
               </span>
             </div>
             {quotaTotal && (
@@ -76,10 +76,10 @@ export default function AnalyticsPage() {
           {/* Overview stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             {[
-              { label: "Total Videos", value: stats?.total ?? 0, icon: "🎬" },
-              { label: "Completed", value: stats?.completed ?? 0, icon: "✅" },
-              { label: "Processing", value: stats?.processing ?? 0, icon: "⚙️" },
-              { label: "This Month", value: stats?.thisMonth ?? 0, icon: "📅" },
+              { label: "Total Videos", value: stats?.total ?? 0, icon: "ðŸŽ¬" },
+              { label: "Completed", value: stats?.completed ?? 0, icon: "âœ…" },
+              { label: "Processing", value: stats?.processing ?? 0, icon: "âš™ï¸" },
+              { label: "This Month", value: stats?.thisMonth ?? 0, icon: "ðŸ“…" },
             ].map(({ label, value, icon }) => (
               <div key={label} className="glass rounded-xl p-4">
                 <div className="text-2xl mb-1">{icon}</div>
